@@ -53,11 +53,11 @@ The project included building an automated data pipeline, cloud-based storage an
 
 AI-Powered Chatbot Providing Data-Driven Insights and Recommendations for Algae Cultivation:
 ![77](https://github.com/user-attachments/assets/d352a00c-545e-4703-8428-fc59560aa567)
+![6](https://github.com/user-attachments/assets/875e67b6-9308-4d5b-9c87-e0089689b3d7)
 
 Weekly Algae Density Forecasting: Predictive vs Optimal Density Comparison:
 Weekly Actionable Insights: AI-Driven Recommendations Integrated with Operational Dashboards
 ![WhatsApp Image 2025-06-03 at 15 13 04_4f1b46af](https://github.com/user-attachments/assets/1b22ad0a-d856-40df-a04c-9619fbf6242b)
-![6](https://github.com/user-attachments/assets/875e67b6-9308-4d5b-9c87-e0089689b3d7)
 ![3](https://github.com/user-attachments/assets/7cd3f714-d4dc-4311-994e-3bf8721906d8)
 ![2](https://github.com/user-attachments/assets/084f4a59-8ace-4eb2-853c-b24726e77708)
 
