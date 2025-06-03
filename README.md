@@ -44,14 +44,14 @@ The project included building an automated data pipeline, cloud-based storage an
 - **Programming:** Python (Pandas, NumPy, scikit-learn, XGBoost)
 - **Version Control:** Git & GitHub
 
-
+## ----------
 ## 📚 Project Structure:
 ## 1.
 ![1](https://github.com/user-attachments/assets/1c20392d-a589-4bde-ab38-24a285b191ef)
 ## 2.
 ![Mobile Data Infrastructure Architecture](https://github.com/user-attachments/assets/4567802f-e1a7-482d-8a8b-0fb80708668b)
 
-
+## ----------
 ## AI-Powered Chatbot Providing Data-Driven Insights and Recommendations for Algae Cultivation:
 ## Predictive Machine Learning Models for Optimal Algae Density and Harvesting Time (R² > 0.8)
 ## 1.
@@ -61,8 +61,8 @@ The project included building an automated data pipeline, cloud-based storage an
 ## 3.
 ![6](https://github.com/user-attachments/assets/875e67b6-9308-4d5b-9c87-e0089689b3d7)
 
-
-##Operational Dashboards with Embedded Model Predictions for Algae Cultivation Optimization:
+## ----------
+## Operational Dashboards with Embedded Model Predictions for Algae Cultivation Optimization:
 ## 1.
 ![WhatsApp Image 2025-06-03 at 15 13 04_4f1b46af](https://github.com/user-attachments/assets/1b22ad0a-d856-40df-a04c-9619fbf6242b)
 ## 2.
