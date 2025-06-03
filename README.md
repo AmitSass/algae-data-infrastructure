@@ -45,4 +45,7 @@ The project included building an automated data pipeline, cloud-based storage an
 - **Version Control:** Git & GitHub
 
 ## 📚 Project Structure
+1.
+![1](https://github.com/user-attachments/assets/1c20392d-a589-4bde-ab38-24a285b191ef)
+2.
 ![Mobile Data Infrastructure Architecture](https://github.com/user-attachments/assets/4567802f-e1a7-482d-8a8b-0fb80708668b)
