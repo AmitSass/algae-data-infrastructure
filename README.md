@@ -1,4 +1,4 @@
-# Algae Data Infrastructure Project
+# 🌱BarAlgar Data Infrastructure Project
 
 This repository presents a comprehensive Data Engineering and Analytics project implemented at **BarAlgae**, a leading microalgae cultivation company. The goal was to build a robust, scalable data platform integrating diverse data sources to enable advanced analytics and predictive modeling for improved operational decisions.
 
