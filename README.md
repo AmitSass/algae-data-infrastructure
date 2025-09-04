@@ -53,7 +53,7 @@ dbt deps && dbt seed && dbt run && dbt test
 | Demo | Production (typical) |
 |------|---------------------|
 | Postgres (container) | Redshift / BigQuery / Snowflake |
-| dbt seeds (CSV) | S3 "Silver" tables / CDC / APIs |
+| dbt seeds (CSV) | S3 "Silver" Parquet dataset / external tables |
 | staging → gold (minimal) | stg / int / marts (full medallion) |
 | basic schema tests | richer tests + data-quality tooling |
 | local .env (ignored) | secrets via env/vault/CI |
@@ -65,6 +65,12 @@ Python · dbt · Postgres · Docker (examples reference Airflow & Great Expectat
 ## Security & IP
 
 Synthetic data only. No production endpoints, schemas, metrics, or secrets are included in this repository.
+
+**Security Features:**
+- All credentials use environment variables (`env_var()`)
+- No hardcoded secrets in any configuration files
+- Demo data only - no real business data
+- Secret scanning and Dependabot alerts enabled
 
 ## Support
 
