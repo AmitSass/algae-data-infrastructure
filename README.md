@@ -58,8 +58,8 @@ dbt deps && dbt seed && dbt run && dbt test
 |------|---------------------|
 | Postgres (container) | Redshift / BigQuery / Snowflake |
 | dbt seeds (CSV) | S3 "Silver" Parquet dataset / external tables |
-| staging → gold (minimal) | stg / int / marts (full medallion) |
-| basic schema tests | richer tests + data-quality tooling |
+| staging → intermediate → marts (full medallion) | stg / int / marts (full medallion) |
+| comprehensive schema tests + dbt_utils | richer tests + data-quality tooling |
 | local .env (ignored) | secrets via env/vault/CI |
 
 ## Data Sources & Models
