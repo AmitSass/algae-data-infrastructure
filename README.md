@@ -14,6 +14,8 @@ Load synthetic FlowCAM-like measurements, model with dbt, and produce an analyti
 
 **In production:** Python ingestors write partitioned Parquet to **S3** (Bronze/Silver), and **dbt on Redshift** builds **Gold marts** from S3 (COPY/Spectrum).
 
+*More docs: [Project Overview](docs/OVERVIEW.md)*
+
 ## Architecture
 
 ```mermaid
