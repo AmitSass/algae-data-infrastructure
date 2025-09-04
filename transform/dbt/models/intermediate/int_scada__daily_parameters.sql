@@ -10,5 +10,5 @@ select
     max(parameter_value) as max_value,
     count(*) as measurement_count,
     current_timestamp as processed_at
-from {{ ref('stg_scada__citect') }}
+from {{ ref('stg_scada__raw') }}
 group by date(measurement_timestamp), tpu_id, parameter_name

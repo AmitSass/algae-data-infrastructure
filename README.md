@@ -42,7 +42,10 @@ dbt deps && dbt seed && dbt run && dbt test
 
 ## What's Inside
 
-- **`transform/dbt/`** — seeds + staging → gold models (fact_flowcam__summary) + schema tests
+- **`transform/dbt/`** — Complete Medallion architecture:
+  - **Staging**: Raw data from 5 sources (FlowCam, SCADA, Weather, Growth, Harvest)
+  - **Intermediate**: Daily aggregations and business logic
+  - **Marts**: 5 fact tables ready for analytics + comprehensive schema tests
 - **`docker-compose.yml`** — Postgres container
 - **`.env.example`** — sample configuration (no real values)
 - **`docs/diagrams/architecture.mmd`** — Mermaid diagram
@@ -57,6 +60,21 @@ dbt deps && dbt seed && dbt run && dbt test
 | staging → gold (minimal) | stg / int / marts (full medallion) |
 | basic schema tests | richer tests + data-quality tooling |
 | local .env (ignored) | secrets via env/vault/CI |
+
+## Data Sources & Models
+
+**5 Data Sources:**
+- **FlowCam** - Microscopy algae density measurements
+- **SCADA** - Process control system data (temperature, pH, etc.)
+- **Weather** - Environmental conditions (temperature, humidity, solar)
+- **Growth Tracking** - Manual growth rate measurements
+- **Harvest** - Production and quality records
+
+**dbt Models (15 total):**
+- **5 Staging models** - Raw data standardization
+- **2 Intermediate models** - Daily aggregations
+- **5 Fact tables** - Business-ready analytics
+- **3 Dimension tables** - Reference data
 
 ## Tech
 

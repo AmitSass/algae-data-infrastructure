@@ -18,12 +18,16 @@ models:
   baralgae_demo:
     # Config indicated by + and applies to all files under models/example/
     +materialized: view
+    +tags: ['baralgae']
     staging:
       +materialized: view
+      +tags: ['staging']
     intermediate:
-      +materialized: view
+      +materialized: ephemeral
+      +tags: ['intermediate']
     marts:
       +materialized: table
+      +tags: ['marts']
 
 seeds:
   baralgae_demo:

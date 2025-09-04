@@ -3,6 +3,13 @@ version: 2
 sources:
   - name: raw_data
     description: "Raw data sources from various systems"
+    database: demo
+    schema: raw
+    loader: python_ingestors
+    loaded_at_field: ingested_at
+    freshness:
+      warn_after: {count: 2, period: day}
+      error_after: {count: 7, period: day}
     tables:
       - name: flowcam_raw_data
         description: "Raw FlowCam microscopy data"
@@ -24,8 +31,8 @@ sources:
             tests:
               - not_null
 
-      - name: scada_citect_data
-        description: "Raw SCADA Citect system data"
+      - name: scada_raw_data
+        description: "Raw SCADA system data"
         columns:
           - name: datetime
             description: "Timestamp of measurement"
@@ -125,8 +132,8 @@ models:
         tests:
           - not_null
 
-  - name: stg_scada__citect
-    description: "Staging model for SCADA Citect data"
+  - name: stg_scada__raw
+    description: "Staging model for SCADA raw data"
     columns:
       - name: measurement_timestamp
         description: "Standardized measurement timestamp"
@@ -250,6 +257,9 @@ models:
 
   - name: fact_flowcam__daily_summary
     description: "Fact table for daily FlowCam summaries"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [measurement_date, tpu_id, reactor_id]
     columns:
       - name: measurement_date
         description: "Measurement date"
@@ -279,6 +289,9 @@ models:
 
   - name: fact_scada__daily_metrics
     description: "Fact table for daily SCADA metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [measurement_date, tpu_id, parameter_name]
     columns:
       - name: measurement_date
         description: "Measurement date"
@@ -296,6 +309,9 @@ models:
         description: "Average parameter value for the day"
         tests:
           - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000000
 
   - name: fact_weather__daily
     description: "Fact table for daily weather data"
@@ -356,3 +372,31 @@ models:
         description: "Quality grade of harvest"
         tests:
           - not_null
+
+  - name: dim_tpu
+    description: "Dimension table for TPU reference data"
+    tests:
+      - unique:
+          column_name: tpu_id
+    columns:
+      - name: tpu_id
+        description: "TPU identifier (primary key)"
+        tests:
+          - not_null
+          - unique
+      - name: tpu_name
+        description: "Human-readable TPU name"
+        tests:
+          - not_null
+      - name: tpu_category
+        description: "TPU category (Primary/Secondary/Tertiary)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Primary', 'Secondary', 'Tertiary']
+      - name: location_wing
+        description: "Physical location wing"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['North Wing', 'South Wing', 'East Wing']
