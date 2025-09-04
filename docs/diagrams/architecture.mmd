@@ -1,0 +1,39 @@
+flowchart LR
+    subgraph "Data Sources"
+        A[Excel/Sheets] --> E[Data Ingestion]
+        B[SCADA Systems] --> E
+        C[FlowCAM Microscopy] --> E
+        D[Weather APIs] --> E
+        F[Growth Tracking] --> E
+    end
+    
+    subgraph "Orchestration Layer"
+        E --> G[Apache Airflow]
+        G --> H[Data Validation]
+        H --> I[Data Transformation]
+        I --> J[Quality Checks]
+    end
+    
+    subgraph "Storage Layer"
+        J --> K[S3/MinIO - Bronze]
+        K --> L[Silver - Standardized]
+        L --> M[(Warehouse: Postgres demo / Redshift prod)]
+    end
+    
+    subgraph "Transformation Layer"
+        M --> N[dbt models: staging → intermediate → marts]
+        N --> O[Data Quality Tests]
+        O --> P[Great Expectations]
+    end
+    
+    subgraph "Analytics Layer"
+        P --> Q[BI Dashboards - Power BI]
+        P --> R[ML Models - Algae Density Prediction]
+        P --> S[Data Docs - Great Expectations]
+    end
+    
+    subgraph "Serving Layer"
+        Q --> T[Operational Reports]
+        R --> U[Predictive Analytics]
+        S --> V[Data Quality Reports]
+    end

@@ -1,0 +1,199 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw data sources"
+    tables:
+      - name: flowcam_raw
+        description: "Raw FlowCam microscopy data"
+        columns:
+          - name: date
+            description: "Measurement date"
+            tests:
+              - not_null
+          - name: tpu
+            description: "Tank Processing Unit ID"
+            tests:
+              - not_null
+          - name: reactor
+            description: "Reactor ID within TPU"
+            tests:
+              - not_null
+          - name: algae_density
+            description: "Algae density measurement"
+            tests:
+              - not_null
+
+models:
+  # Bronze layer models
+  - name: bz_flowcam__raw
+    description: "Bronze layer: Raw FlowCam data"
+    columns:
+      - name: measurement_date
+        description: "Standardized measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "Standardized TPU ID"
+        tests:
+          - not_null
+      - name: reactor_id
+        description: "Standardized reactor ID"
+        tests:
+          - not_null
+      - name: algae_density
+        description: "Standardized algae density"
+        tests:
+          - not_null
+
+  # Silver layer models
+  - name: sl_flowcam__standardized
+    description: "Silver layer: Standardized FlowCam data"
+    columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU ID"
+        tests:
+          - not_null
+      - name: reactor_id
+        description: "Reactor ID"
+        tests:
+          - not_null
+      - name: algae_density
+        description: "Algae density"
+        tests:
+          - not_null
+      - name: is_outlier
+        description: "Data quality flag for outliers"
+        tests:
+          - not_null
+      - name: is_null
+        description: "Data quality flag for null values"
+        tests:
+          - not_null
+
+  # Gold layer models
+  - name: gd_flowcam__daily_summary
+    description: "Gold layer: Daily FlowCam summary for analytics"
+    columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU ID"
+        tests:
+          - not_null
+      - name: reactor_id
+        description: "Reactor ID"
+        tests:
+          - not_null
+      - name: avg_density
+        description: "Average algae density"
+        tests:
+          - not_null
+      - name: density_category
+        description: "Density category classification"
+        tests:
+          - not_null
+      - name: performance_status
+        description: "Performance status classification"
+        tests:
+          - not_null
+
+  # Legacy staging models (for backward compatibility)
+  - name: stg_flowcam__records
+    description: "Staging model for FlowCam records (legacy)"
+    columns:
+      - name: measurement_date
+        description: "Standardized measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "Standardized TPU ID"
+        tests:
+          - not_null
+      - name: reactor_id
+        description: "Standardized reactor ID"
+        tests:
+          - not_null
+      - name: algae_density
+        description: "Standardized algae density"
+        tests:
+          - not_null
+
+  - name: int_flowcam__daily_agg
+    description: "Daily aggregations of FlowCam data (legacy)"
+    columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU ID"
+        tests:
+          - not_null
+      - name: reactor_id
+        description: "Reactor ID"
+        tests:
+          - not_null
+      - name: avg_density
+        description: "Average algae density for the day"
+        tests:
+          - not_null
+      - name: measurement_count
+        description: "Number of measurements"
+        tests:
+          - not_null
+
+  - name: fact_flowcam__summary
+    description: "Fact table for FlowCam summary analytics (legacy)"
+    columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU ID"
+        tests:
+          - not_null
+      - name: reactor_id
+        description: "Reactor ID"
+        tests:
+          - not_null
+      - name: avg_density
+        description: "Average algae density"
+        tests:
+          - not_null
+      - name: density_category
+        description: "Density category classification"
+        tests:
+          - not_null
+      - name: performance_status
+        description: "Performance status classification"
+        tests:
+          - not_null
+
+  - name: dim_tpu
+    description: "Dimension table for TPU information (legacy)"
+    columns:
+      - name: tpu_id
+        description: "TPU ID"
+        tests:
+          - not_null
+          - unique
+      - name: tpu_name
+        description: "TPU name"
+        tests:
+          - not_null
+      - name: tpu_location
+        description: "TPU location"
+        tests:
+          - not_null
+      - name: tpu_capacity_liters
+        description: "TPU capacity in liters"
+        tests:
+          - not_null

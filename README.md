@@ -1,77 +1,84 @@
-# 🌱BarAlgae Data Infrastructure Project
+# BarAlgae — Public Demo (Data Infrastructure & Analytics)
 
-This repository presents a comprehensive Data Engineering and Analytics project implemented at **BarAlgae**, a leading microalgae cultivation company. The goal was to build a robust, scalable data platform integrating diverse data sources to enable advanced analytics and predictive modeling for improved operational decisions.
+[![CI](https://github.com/AmitSass/algae-data-infrastructure/actions/workflows/ci.yml/badge.svg)](https://github.com/AmitSass/algae-data-infrastructure/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3130/)
+[![dbt](https://img.shields.io/badge/dbt-1.7.19-red.svg)](https://www.getdbt.com/)
 
-## 🚩 Project Overview
+**Purpose**: a screen-ready demo showing an end-to-end data workflow with synthetic data only.  
+**Scope**: minimal, reproducible example (no production code, secrets, or proprietary logic).
 
-The project included building an automated data pipeline, cloud-based storage and data warehousing solutions, analytics dashboards, and machine learning models. It enabled real-time monitoring, efficient management, and predictive insights for algae cultivation.
+## 30-Second Summary
 
-## 🔗 Main Components
+Load synthetic FlowCAM-like measurements, model with dbt, and produce an analytics-ready fact table. The demo runs locally on Postgres (Docker).
 
-### 1. Data Ingestion & Pipeline Automation
-- Automated daily ingestion from multiple sources:
-  - Excel files and Google Sheets.
-  - Internal SQL databases.
-  - Real-time sensor data and various operational machinery.
-- Orchestration of data pipelines using Apache Airflow.
+**In production:** Python ingestors write partitioned Parquet to **S3** (Bronze/Silver), and **dbt on Redshift** builds **Gold marts** from S3 (COPY/Spectrum).
 
-### 2. Data Lake and Warehouse
-- Centralized storage in an AWS S3 Data Lake, organized with partitions for optimized access.
-- Data Warehouse created in AWS Redshift:
-  - Structured layers (Staging, Intermediate, Marts).
-  - Automated daily ETL transformations using DBT.
+## Architecture
 
-### 3. Dashboards and Visualizations
-- Power BI dashboards for operational tracking and management:
-  - KPI tracking.
-  - Predictive analytics (harvest times, algae density, health indicators).
-  - Daily refreshed, interactive reports.
+```mermaid
+flowchart LR
+  A[Seed CSV (synthetic)] --> B[(Postgres - demo)]
+  B --> C[dbt models: staging -> gold]
+  C --> D[Analytics table: fact_flowcam__summary]
+```
 
-### 4. Machine Learning Models
-- Predictive models (Random Forest, XGBoost, Gradient Boosting):
-  - Predict algae density and optimal harvesting time.
-  - Achieved high accuracy (R² > 0.8).
-  - Models fully integrated into the daily analytics platform.
+## Quickstart
 
-### 5. AI-Based Chatbot
-- Developed a chatbot powered by AI (Claude AI).
-- Enabled users to query data naturally and obtain immediate insights.
+```bash
+git clone https://github.com/AmitSass/algae-data-infrastructure && cd algae-data-infrastructure
+cp .env.example .env
+# .env is git-ignored; fill with demo values only
+docker compose up -d          # starts Postgres for the demo
+pip install -U dbt-postgres
+export DBT_PROFILES_DIR=transform/dbt
+# Windows (PowerShell): $env:DBT_PROFILES_DIR="transform/dbt"
+dbt deps && dbt seed && dbt run && dbt test
+```
 
-## 🛠 Technologies Used
-- **Cloud:** AWS (S3, Redshift)
-- **ETL/ELT:** Apache Airflow, DBT
-- **Analytics and Visualization:** Power BI
-- **Programming:** Python (Pandas, NumPy, scikit-learn, XGBoost)
-- **Version Control:** Git & GitHub
+**Optional**: The repo includes examples for Airflow / Great Expectations, but they're not required for this minimal run.
 
-### ----------
-### 📚 Project Structure:
-### 1.
-![1](https://github.com/user-attachments/assets/1c20392d-a589-4bde-ab38-24a285b191ef)
-### 2.
-![Mobile Data Infrastructure Architecture](https://github.com/user-attachments/assets/4567802f-e1a7-482d-8a8b-0fb80708668b)
+## What's Inside
 
-### ----------
-### AI-Powered Chatbot Providing Data-Driven Insights and Recommendations for Algae Cultivation:
-### Predictive Machine Learning Models for Optimal Algae Density and Harvesting Time (R² > 0.8)
-### 1.
-![77](https://github.com/user-attachments/assets/d352a00c-545e-4703-8428-fc59560aa567)
-### 2.
-![WhatsApp Image 2025-06-03 at 15 12 51_c976be82](https://github.com/user-attachments/assets/b6ccb7be-3f92-4855-b118-b80df63b82a1)
-### 3.
-![6](https://github.com/user-attachments/assets/875e67b6-9308-4d5b-9c87-e0089689b3d7)
+- **`transform/dbt/`** — seeds + staging → gold models (fact_flowcam__summary) + schema tests
+- **`docker-compose.yml`** — Postgres container
+- **`.env.example`** — sample configuration (no real values)
+- **`docs/diagrams/architecture.mmd`** — Mermaid diagram
+- **(optional)** `orchestration/airflow/`, `data_quality/great_expectations/` examples
 
-### ----------
-### Operational Dashboards with Embedded Model Predictions for Algae Cultivation Optimization:
-### 1.
-![WhatsApp Image 2025-06-03 at 15 13 04_4f1b46af](https://github.com/user-attachments/assets/1b22ad0a-d856-40df-a04c-9619fbf6242b)
-### 2.
-![3](https://github.com/user-attachments/assets/7cd3f714-d4dc-4311-994e-3bf8721906d8)
-### 3.
-![2](https://github.com/user-attachments/assets/084f4a59-8ace-4eb2-853c-b24726e77708)
+## Demo ↔ Prod Mapping
 
+| Demo | Production (typical) |
+|------|---------------------|
+| Postgres (container) | Redshift / BigQuery / Snowflake |
+| dbt seeds (CSV) | S3 "Silver" tables / CDC / APIs |
+| staging → gold (minimal) | stg / int / marts (full medallion) |
+| basic schema tests | richer tests + data-quality tooling |
+| local .env (ignored) | secrets via env/vault/CI |
 
+## Tech
 
+Python · dbt · Postgres · Docker (examples reference Airflow & Great Expectations)
 
+## Security & IP
 
+Synthetic data only. No production endpoints, schemas, metrics, or secrets are included in this repository.
 
+## Support
+
+Questions? Open a [GitHub Issue](https://github.com/AmitSass/algae-data-infrastructure/issues)
+
+Email (optional): hi@amitsass.dev
+
+## Production Architecture
+
+```mermaid
+flowchart LR
+  A[Ingest (Python)] --> B[S3 Bronze/Silver (Parquet, partitioned)]
+  B --> C[(Redshift)]
+  C --> D[dbt → Gold marts]
+```
+
+## License
+
+MIT © Amit Sasson

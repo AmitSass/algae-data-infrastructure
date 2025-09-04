@@ -1,0 +1,97 @@
+# Great Expectations configuration file
+# This file configures the Great Expectations data quality framework
+
+config_version: 3.0
+
+# Data context configuration
+datasources:
+  flowcam_datasource:
+    class_name: Datasource
+    execution_engine:
+      class_name: PandasExecutionEngine
+    data_connectors:
+      default_inferred_data_connector_name:
+        class_name: InferredAssetFilesystemDataConnector
+        base_directory: ../../examples/data-sample
+        default_regex:
+          group_names:
+            - data_asset_name
+          pattern: (.*)\.csv
+      default_runtime_data_connector_name:
+        class_name: RuntimeDataConnector
+        batch_identifiers:
+          - default_identifier_name
+
+# Expectations store configuration
+expectations_store_name: expectations_store
+expectations_store_backend:
+  class_name: TupleFilesystemStoreBackend
+  base_directory: expectations
+
+# Validations store configuration
+validations_store_name: validations_store
+validations_store_backend:
+  class_name: TupleFilesystemStoreBackend
+  base_directory: validations
+
+# Evaluation parameter store configuration
+evaluation_parameter_store_name: evaluation_parameter_store
+evaluation_parameter_store_backend:
+  class_name: InMemoryStoreBackend
+
+# Checkpoint store configuration
+checkpoint_store_name: checkpoint_store
+checkpoint_store_backend:
+  class_name: TupleFilesystemStoreBackend
+  base_directory: checkpoints
+
+# Data docs configuration
+data_docs_sites:
+  local_site:
+    class_name: SiteBuilder
+    show_how_to_buttons: true
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: ../../docs/data_docs
+    site_index_builder:
+      class_name: DefaultSiteIndexBuilder
+
+# Profiling configuration
+profiling:
+  class_name: Profiler
+  module_name: great_expectations.profiler
+
+# Anonymous usage statistics
+anonymous_usage_statistics:
+  enabled: false
+
+# Concurrency configuration
+concurrency:
+  enabled: false
+
+# Store configuration
+stores:
+  expectations_store:
+    class_name: ExpectationsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: expectations
+  validations_store:
+    class_name: ValidationsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: validations
+  evaluation_parameter_store:
+    class_name: EvaluationParameterStore
+    store_backend:
+      class_name: InMemoryStoreBackend
+  checkpoint_store:
+    class_name: CheckpointStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: checkpoints
+
+# Runtime configuration
+runtime_environment:
+  class_name: RuntimeEnvironment
+  module_name: great_expectations.runtime_environment

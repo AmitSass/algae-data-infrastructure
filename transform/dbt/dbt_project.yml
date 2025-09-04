@@ -1,0 +1,152 @@
+name: 'baralgae_demo'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'baralgae_demo'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Configurations for the project
+models:
+  baralgae_demo:
+    # Config indicated by + and applies to all files under models/example/
+    +materialized: view
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  baralgae_demo:
+    +schema: raw
+
+# Configurations for packages
+packages:
+  - package: dbt-labs/dbt_utils
+    version: 1.1.1
+
+# Configurations for tests
+tests:
+  baralgae_demo:
+    +schema: test
+
+# Configurations for snapshots
+snapshots:
+  baralgae_demo:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +updated_at: updated_at
+
+# Configurations for analysis
+analysis:
+  baralgae_demo:
+    +schema: analysis
+
+# Configurations for macros
+macros:
+  baralgae_demo:
+    +schema: macros
+
+# Configurations for docs
+docs:
+  baralgae_demo:
+    +schema: docs
+
+# Configurations for sources
+sources:
+  baralgae_demo:
+    +schema: raw
+
+# Configurations for exposures
+exposures:
+  baralgae_demo:
+    +schema: exposures
+
+# Configurations for metrics
+metrics:
+  baralgae_demo:
+    +schema: metrics
+
+# Configurations for semantic models
+semantic_models:
+  baralgae_demo:
+    +schema: semantic_models
+
+# Configurations for unit tests
+unit_tests:
+  baralgae_demo:
+    +schema: unit_tests
+
+# Configurations for saved queries
+saved_queries:
+  baralgae_demo:
+    +schema: saved_queries
+
+# Configurations for model versions
+model_versions:
+  baralgae_demo:
+    +schema: model_versions
+
+# Configurations for contracts
+contracts:
+  baralgae_demo:
+    +schema: contracts
+
+# Configurations for groups
+groups:
+  baralgae_demo:
+    +schema: groups
+
+# Configurations for access
+access:
+  baralgae_demo:
+    +schema: access
+
+# Configurations for metrics
+metrics:
+  baralgae_demo:
+    +schema: metrics
+
+# Configurations for semantic models
+semantic_models:
+  baralgae_demo:
+    +schema: semantic_models
+
+# Configurations for unit tests
+unit_tests:
+  baralgae_demo:
+    +schema: unit_tests
+
+# Configurations for saved queries
+saved_queries:
+  baralgae_demo:
+    +schema: saved_queries
+
+# Configurations for model versions
+model_versions:
+  baralgae_demo:
+    +schema: model_versions
+
+# Configurations for contracts
+contracts:
+  baralgae_demo:
+    +schema: contracts
+
+# Configurations for groups
+groups:
+  baralgae_demo:
+    +schema: groups
+
+# Configurations for access
+access:
+  baralgae_demo:
+    +schema: access
