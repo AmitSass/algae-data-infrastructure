@@ -269,6 +269,9 @@ models:
         description: "TPU identifier"
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_tpu')
+              field: tpu_id
       - name: reactor_id
         description: "Reactor identifier"
         tests:
@@ -301,6 +304,9 @@ models:
         description: "TPU identifier"
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_tpu')
+              field: tpu_id
       - name: parameter_name
         description: "SCADA parameter name"
         tests:
@@ -344,6 +350,9 @@ models:
         description: "TPU identifier"
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_tpu')
+              field: tpu_id
       - name: daily_growth_rate
         description: "Daily growth rate"
         tests:
@@ -364,6 +373,9 @@ models:
         description: "TPU identifier"
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_tpu')
+              field: tpu_id
       - name: volume_harvested_liters
         description: "Volume harvested in liters"
         tests:
