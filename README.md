@@ -2,7 +2,8 @@
 
 [![CI](https://github.com/AmitSass/algae-data-infrastructure/actions/workflows/ci.yml/badge.svg)](https://github.com/AmitSass/algae-data-infrastructure/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3130/)
+
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
 [![dbt](https://img.shields.io/badge/dbt-1.7.19-red.svg)](https://www.getdbt.com/)
 
 **Purpose**: a screen-ready demo showing an end-to-end data workflow with synthetic data only.  
