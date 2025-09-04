@@ -35,6 +35,7 @@ docker compose up -d          # starts Postgres for the demo
 pip install -U dbt-postgres
 export DBT_PROFILES_DIR=transform/dbt
 # Windows (PowerShell): $env:DBT_PROFILES_DIR="transform/dbt"
+cd transform/dbt
 dbt deps && dbt seed && dbt run && dbt test
 ```
 
@@ -70,11 +71,17 @@ dbt deps && dbt seed && dbt run && dbt test
 - **Growth Tracking** - Manual growth rate measurements
 - **Harvest** - Production and quality records
 
-**dbt Models (15 total):**
-- **5 Staging models** - Raw data standardization
-- **2 Intermediate models** - Daily aggregations
-- **5 Fact tables** - Business-ready analytics
-- **3 Dimension tables** - Reference data
+**dbt Models (16 total):**
+- **5 Staging models** - Raw data standardization (views)
+- **2 Intermediate models** - Daily aggregations (ephemeral)
+- **6 Marts tables** - Business-ready analytics (tables)
+- **3 Dimension tables** - Reference data (tables)
+
+**Professional Features:**
+- **Comprehensive testing** - Unique combinations, data ranges, relationships
+- **Data freshness monitoring** - Source-level freshness checks
+- **Medallion architecture** - Staging → Intermediate → Marts
+- **dbt_utils integration** - Advanced testing capabilities
 
 ## Tech
 
