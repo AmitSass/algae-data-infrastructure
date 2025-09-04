@@ -19,7 +19,7 @@ Load synthetic FlowCAM-like measurements, model with dbt, and produce an analyti
 
 ## Architecture
 
-<img src="docs/architecture.jpg" width="600" alt="BarAlgae Data Infrastructure Architecture Overview">
+<img src="docs/architecture.jpg" width="400" alt="BarAlgae Data Infrastructure Architecture Overview">
 
 ```mermaid
 flowchart LR
