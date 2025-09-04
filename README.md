@@ -71,11 +71,10 @@ dbt deps && dbt seed && dbt run && dbt test
 - **Growth Tracking** - Manual growth rate measurements
 - **Harvest** - Production and quality records
 
-**dbt Models (16 total):**
-- **5 Staging models** - Raw data standardization (views)
-- **2 Intermediate models** - Daily aggregations (ephemeral)
-- **6 Marts tables** - Business-ready analytics (tables)
-- **3 Dimension tables** - Reference data (tables)
+**dbt Models (demo):**
+- **Staging:** 7 models (FlowCam, SCADA, Weather, Growth, Harvest)
+- **Intermediate:** 3 models (FlowCam daily agg/summary, SCADA daily parameters)
+- **Marts:** 6 fact tables + 1 dimension (`dim_tpu`)
 
 **Professional Features:**
 - **Comprehensive testing** - Unique combinations, data ranges, relationships
