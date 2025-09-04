@@ -77,9 +77,9 @@ Email (optional): hi@amitsass.dev
 ```mermaid
 flowchart LR
   A["Ingest (Python)"] --> B["S3 Bronze/Silver (Parquet, partitioned)"]
-  B --> C[("Redshift: staging/external")]
+  B -->|"COPY/Spectrum"| C[("Redshift: staging/external")]
   D["dbt (runs on Redshift)"]
-  C -->|"read (COPY/Spectrum)"| D
+  C -->|"read/query"| D
   D -->|"materialize"| E[("Redshift: Gold marts")]
   E --> F["BI / ML"]
 ```
