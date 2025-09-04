@@ -101,7 +101,7 @@ Synthetic data only. No production endpoints, schemas, metrics, or secrets are i
 
 Questions? Open a [GitHub Issue](https://github.com/AmitSass/algae-data-infrastructure/issues)
 
-Email (optional): hi@amitsass.dev
+Email (optional): amitsason47@gmail.com
 
 ## Production Architecture
 
