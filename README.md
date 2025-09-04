@@ -18,9 +18,9 @@ Load synthetic FlowCAM-like measurements, model with dbt, and produce an analyti
 
 ```mermaid
 flowchart LR
-  A[Seed CSV (synthetic)] --> B[(Postgres - demo)]
-  B --> C[dbt models: staging -> gold]
-  C --> D[Analytics table: fact_flowcam__summary]
+  A["Seed CSV (synthetic)"] --> B[("Postgres - demo")]
+  B --> C["dbt models: staging -> gold"]
+  C --> D["Analytics table: fact_flowcam__summary"]
 ```
 
 ## Quickstart
@@ -74,9 +74,9 @@ Email (optional): hi@amitsass.dev
 
 ```mermaid
 flowchart LR
-  A[Ingest (Python)] --> B[S3 Bronze/Silver (Parquet, partitioned)]
-  B --> C[(Redshift)]
-  C --> D[dbt → Gold marts]
+  A["Ingest (Python)"] --> B["S3 Bronze/Silver (Parquet, partitioned)"]
+  B --> C[("Redshift")]
+  C --> D["dbt -> Gold marts"]
 ```
 
 ## License
