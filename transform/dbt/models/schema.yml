@@ -1,10 +1,10 @@
 version: 2
 
 sources:
-  - name: raw
-    description: "Raw data sources"
+  - name: raw_data
+    description: "Raw data sources from various systems"
     tables:
-      - name: flowcam_raw
+      - name: flowcam_raw_data
         description: "Raw FlowCam microscopy data"
         columns:
           - name: date
@@ -12,11 +12,11 @@ sources:
             tests:
               - not_null
           - name: tpu
-            description: "Tank Processing Unit ID"
+            description: "TPU (Tank Processing Unit) identifier"
             tests:
               - not_null
           - name: reactor
-            description: "Reactor ID within TPU"
+            description: "Reactor identifier within TPU"
             tests:
               - not_null
           - name: algae_density
@@ -24,176 +24,335 @@ sources:
             tests:
               - not_null
 
+      - name: scada_citect_data
+        description: "Raw SCADA Citect system data"
+        columns:
+          - name: datetime
+            description: "Timestamp of measurement"
+            tests:
+              - not_null
+          - name: tpu
+            description: "TPU identifier"
+            tests:
+              - not_null
+          - name: parameter_name
+            description: "SCADA parameter name"
+            tests:
+              - not_null
+          - name: value
+            description: "Parameter value"
+            tests:
+              - not_null
+
+      - name: weather_data
+        description: "Weather data from external API"
+        columns:
+          - name: date
+            description: "Weather date"
+            tests:
+              - not_null
+          - name: temperature
+            description: "Temperature in Celsius"
+            tests:
+              - not_null
+          - name: humidity
+            description: "Humidity percentage"
+            tests:
+              - not_null
+          - name: solar_radiation
+            description: "Solar radiation measurement"
+            tests:
+              - not_null
+
+      - name: growth_tracking_data
+        description: "Manual growth tracking measurements"
+        columns:
+          - name: date
+            description: "Measurement date"
+            tests:
+              - not_null
+          - name: tpu
+            description: "TPU identifier"
+            tests:
+              - not_null
+          - name: growth_rate
+            description: "Daily growth rate"
+            tests:
+              - not_null
+          - name: biomass_density
+            description: "Biomass density measurement"
+            tests:
+              - not_null
+
+      - name: harvest_data
+        description: "Harvest documentation and records"
+        columns:
+          - name: harvest_date
+            description: "Date of harvest"
+            tests:
+              - not_null
+          - name: tpu
+            description: "TPU identifier"
+            tests:
+              - not_null
+          - name: volume_harvested
+            description: "Volume harvested in liters"
+            tests:
+              - not_null
+          - name: quality_grade
+            description: "Quality grade of harvest"
+            tests:
+              - not_null
+
 models:
-  # Bronze layer models
-  - name: bz_flowcam__raw
-    description: "Bronze layer: Raw FlowCam data"
+  - name: stg_flowcam__raw
+    description: "Staging model for FlowCam raw data"
     columns:
       - name: measurement_date
         description: "Standardized measurement date"
         tests:
           - not_null
       - name: tpu_id
-        description: "Standardized TPU ID"
+        description: "Standardized TPU identifier"
         tests:
           - not_null
       - name: reactor_id
-        description: "Standardized reactor ID"
+        description: "Standardized reactor identifier"
         tests:
           - not_null
       - name: algae_density
-        description: "Standardized algae density"
+        description: "Standardized algae density measurement"
         tests:
           - not_null
 
-  # Silver layer models
-  - name: sl_flowcam__standardized
-    description: "Silver layer: Standardized FlowCam data"
+  - name: stg_scada__citect
+    description: "Staging model for SCADA Citect data"
+    columns:
+      - name: measurement_timestamp
+        description: "Standardized measurement timestamp"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "Standardized TPU identifier"
+        tests:
+          - not_null
+      - name: parameter_name
+        description: "SCADA parameter name"
+        tests:
+          - not_null
+      - name: parameter_value
+        description: "Parameter value"
+        tests:
+          - not_null
+
+  - name: stg_weather__daily
+    description: "Staging model for weather data"
+    columns:
+      - name: weather_date
+        description: "Weather date"
+        tests:
+          - not_null
+      - name: temperature_celsius
+        description: "Temperature in Celsius"
+        tests:
+          - not_null
+      - name: humidity_percentage
+        description: "Humidity percentage"
+        tests:
+          - not_null
+      - name: solar_radiation
+        description: "Solar radiation measurement"
+        tests:
+          - not_null
+
+  - name: stg_growth__tracking
+    description: "Staging model for growth tracking data"
     columns:
       - name: measurement_date
         description: "Measurement date"
         tests:
           - not_null
       - name: tpu_id
-        description: "TPU ID"
+        description: "TPU identifier"
         tests:
           - not_null
-      - name: reactor_id
-        description: "Reactor ID"
+      - name: daily_growth_rate
+        description: "Daily growth rate"
         tests:
           - not_null
-      - name: algae_density
-        description: "Algae density"
-        tests:
-          - not_null
-      - name: is_outlier
-        description: "Data quality flag for outliers"
-        tests:
-          - not_null
-      - name: is_null
-        description: "Data quality flag for null values"
+      - name: biomass_density
+        description: "Biomass density measurement"
         tests:
           - not_null
 
-  # Gold layer models
-  - name: gd_flowcam__daily_summary
-    description: "Gold layer: Daily FlowCam summary for analytics"
+  - name: stg_harvest__records
+    description: "Staging model for harvest records"
+    columns:
+      - name: harvest_date
+        description: "Harvest date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU identifier"
+        tests:
+          - not_null
+      - name: volume_harvested_liters
+        description: "Volume harvested in liters"
+        tests:
+          - not_null
+      - name: quality_grade
+        description: "Quality grade of harvest"
+        tests:
+          - not_null
+
+  - name: int_flowcam__daily_summary
+    description: "Intermediate model for daily FlowCam summaries"
     columns:
       - name: measurement_date
         description: "Measurement date"
         tests:
           - not_null
       - name: tpu_id
-        description: "TPU ID"
+        description: "TPU identifier"
         tests:
           - not_null
       - name: reactor_id
-        description: "Reactor ID"
+        description: "Reactor identifier"
         tests:
           - not_null
-      - name: avg_density
-        description: "Average algae density"
-        tests:
-          - not_null
-      - name: density_category
-        description: "Density category classification"
-        tests:
-          - not_null
-      - name: performance_status
-        description: "Performance status classification"
-        tests:
-          - not_null
-
-  # Legacy staging models (for backward compatibility)
-  - name: stg_flowcam__records
-    description: "Staging model for FlowCam records (legacy)"
-    columns:
-      - name: measurement_date
-        description: "Standardized measurement date"
-        tests:
-          - not_null
-      - name: tpu_id
-        description: "Standardized TPU ID"
-        tests:
-          - not_null
-      - name: reactor_id
-        description: "Standardized reactor ID"
-        tests:
-          - not_null
-      - name: algae_density
-        description: "Standardized algae density"
-        tests:
-          - not_null
-
-  - name: int_flowcam__daily_agg
-    description: "Daily aggregations of FlowCam data (legacy)"
-    columns:
-      - name: measurement_date
-        description: "Measurement date"
-        tests:
-          - not_null
-      - name: tpu_id
-        description: "TPU ID"
-        tests:
-          - not_null
-      - name: reactor_id
-        description: "Reactor ID"
-        tests:
-          - not_null
-      - name: avg_density
+      - name: avg_algae_density
         description: "Average algae density for the day"
         tests:
           - not_null
-      - name: measurement_count
-        description: "Number of measurements"
-        tests:
-          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 5
 
-  - name: fact_flowcam__summary
-    description: "Fact table for FlowCam summary analytics (legacy)"
+  - name: int_scada__daily_parameters
+    description: "Intermediate model for daily SCADA parameter summaries"
     columns:
       - name: measurement_date
         description: "Measurement date"
         tests:
           - not_null
       - name: tpu_id
-        description: "TPU ID"
+        description: "TPU identifier"
         tests:
           - not_null
-      - name: reactor_id
-        description: "Reactor ID"
+      - name: parameter_name
+        description: "SCADA parameter name"
         tests:
           - not_null
-      - name: avg_density
-        description: "Average algae density"
-        tests:
-          - not_null
-      - name: density_category
-        description: "Density category classification"
-        tests:
-          - not_null
-      - name: performance_status
-        description: "Performance status classification"
+      - name: avg_value
+        description: "Average parameter value for the day"
         tests:
           - not_null
 
-  - name: dim_tpu
-    description: "Dimension table for TPU information (legacy)"
+  - name: fact_flowcam__daily_summary
+    description: "Fact table for daily FlowCam summaries"
     columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
       - name: tpu_id
-        description: "TPU ID"
+        description: "TPU identifier"
         tests:
           - not_null
-          - unique
-      - name: tpu_name
-        description: "TPU name"
+      - name: reactor_id
+        description: "Reactor identifier"
         tests:
           - not_null
-      - name: tpu_location
-        description: "TPU location"
+      - name: avg_algae_density
+        description: "Average algae density for the day"
         tests:
           - not_null
-      - name: tpu_capacity_liters
-        description: "TPU capacity in liters"
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 5
+      - name: density_category
+        description: "Density category (High/Medium/Low)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High', 'Medium', 'Low']
+
+  - name: fact_scada__daily_metrics
+    description: "Fact table for daily SCADA metrics"
+    columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU identifier"
+        tests:
+          - not_null
+      - name: parameter_name
+        description: "SCADA parameter name"
+        tests:
+          - not_null
+      - name: avg_value
+        description: "Average parameter value for the day"
+        tests:
+          - not_null
+
+  - name: fact_weather__daily
+    description: "Fact table for daily weather data"
+    columns:
+      - name: weather_date
+        description: "Weather date"
+        tests:
+          - not_null
+      - name: temperature_celsius
+        description: "Temperature in Celsius"
+        tests:
+          - not_null
+      - name: humidity_percentage
+        description: "Humidity percentage"
+        tests:
+          - not_null
+      - name: solar_radiation
+        description: "Solar radiation measurement"
+        tests:
+          - not_null
+
+  - name: fact_growth__tracking
+    description: "Fact table for growth tracking data"
+    columns:
+      - name: measurement_date
+        description: "Measurement date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU identifier"
+        tests:
+          - not_null
+      - name: daily_growth_rate
+        description: "Daily growth rate"
+        tests:
+          - not_null
+      - name: biomass_density
+        description: "Biomass density measurement"
+        tests:
+          - not_null
+
+  - name: fact_harvest__records
+    description: "Fact table for harvest records"
+    columns:
+      - name: harvest_date
+        description: "Harvest date"
+        tests:
+          - not_null
+      - name: tpu_id
+        description: "TPU identifier"
+        tests:
+          - not_null
+      - name: volume_harvested_liters
+        description: "Volume harvested in liters"
+        tests:
+          - not_null
+      - name: quality_grade
+        description: "Quality grade of harvest"
         tests:
           - not_null
