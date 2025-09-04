@@ -1,0 +1,5 @@
+[33mf55f8a9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update README, CI workflow, and requirements - enhanced project documentation and CI pipeline
+[33m1c2f748[m Update README, CI workflow, and requirements - enhanced project documentation and CI pipeline
+[33mf6edf04[m Update README, CI workflow, and requirements - enhanced project documentation and CI pipeline
+[33m2e514ae[m fix: Simplify CI pipeline to prevent failures
+[33m8f37d7a[m fix: Correct dbt model counts in README
