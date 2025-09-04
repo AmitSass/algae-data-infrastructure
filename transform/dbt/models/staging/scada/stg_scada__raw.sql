@@ -1,10 +1,9 @@
--- Staging model for SCADA raw data
--- Standardizes SCADA parameter measurements
+{{ config(materialized='view', tags=['staging','scada']) }}
 
 select
-    datetime::timestamp as measurement_timestamp,
-    tpu::integer as tpu_id,
-    parameter_name::varchar as parameter_name,
-    value::float as parameter_value,
-    current_timestamp as processed_at
-from {{ source('raw_data', 'scada_raw_data') }}
+  cast(datetime as timestamp)     as measurement_timestamp,
+  cast(tpu as integer)            as tpu_id,
+  cast(parameter_name as text)    as parameter_name,
+  cast(value as double precision) as parameter_value
+from {{ source('raw_data','scada_raw_data') }}
+where datetime is not null and tpu is not null and parameter_name is not null

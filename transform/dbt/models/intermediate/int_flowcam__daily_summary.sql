@@ -1,14 +1,13 @@
--- Intermediate model for daily FlowCam summaries
--- Aggregates FlowCam data by date, TPU, and reactor
+{{ config(materialized='view', tags=['intermediate','flowcam']) }}
 
 select
-    measurement_date,
-    tpu_id,
-    reactor_id,
-    avg(algae_density) as avg_algae_density,
-    min(algae_density) as min_algae_density,
-    max(algae_density) as max_algae_density,
-    count(*) as measurement_count,
-    current_timestamp as processed_at
-from {{ ref('stg_flowcam__raw') }}
-group by measurement_date, tpu_id, reactor_id
+  a.measurement_date,
+  a.tpu_id,
+  a.reactor_id,
+  a.avg_algae_density,
+  case
+    when a.avg_algae_density >= 1.5 then 'High'
+    when a.avg_algae_density >= 0.8 then 'Medium'
+    else 'Low'
+  end as density_category
+from {{ ref('int_flowcam__daily_agg') }} a

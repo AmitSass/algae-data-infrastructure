@@ -1,10 +1,10 @@
--- Staging model for FlowCam raw data
--- Applies basic transformations and type casting
+{{ config(materialized='view', tags=['staging','flowcam']) }}
+-- Prod note: when on Redshift, you can run COPY in a pre_hook to load from S3 (Parquet) into a raw table.
 
 select
-    date::date as measurement_date,
-    tpu::integer as tpu_id,
-    reactor::integer as reactor_id,
-    algae_density::float as algae_density,
-    current_timestamp as processed_at
-from {{ source('raw_data', 'flowcam_raw_data') }}
+  cast(date as date)              as measurement_date,
+  cast(tpu as integer)            as tpu_id,
+  cast(reactor as integer)        as reactor_id,
+  cast(algae_density as double precision) as algae_density
+from {{ source('raw_data','flowcam_raw_data') }}
+where date is not null and tpu is not null and reactor is not null

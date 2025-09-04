@@ -1,10 +1,9 @@
--- Staging model for growth tracking data
--- Standardizes manual growth measurements
+{{ config(materialized='view', tags=['staging','growth']) }}
 
 select
-    date::date as measurement_date,
-    tpu::integer as tpu_id,
-    growth_rate::float as daily_growth_rate,
-    biomass_density::float as biomass_density,
-    current_timestamp as processed_at
-from {{ source('raw_data', 'growth_tracking_data') }}
+  cast(date as date)              as measurement_date,
+  cast(tpu as integer)            as tpu_id,
+  cast(growth_rate as double precision)    as daily_growth_rate,
+  cast(biomass_density as double precision) as biomass_density
+from {{ source('raw_data','growth_tracking_data') }}
+where date is not null and tpu is not null

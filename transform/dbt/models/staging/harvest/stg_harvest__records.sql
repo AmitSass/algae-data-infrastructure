@@ -1,10 +1,9 @@
--- Staging model for harvest records
--- Standardizes harvest documentation
+{{ config(materialized='view', tags=['staging','harvest']) }}
 
 select
-    harvest_date::date as harvest_date,
-    tpu::integer as tpu_id,
-    volume_harvested::float as volume_harvested_liters,
-    quality_grade::varchar as quality_grade,
-    current_timestamp as processed_at
-from {{ source('raw_data', 'harvest_data') }}
+  cast(harvest_date as date)      as harvest_date,
+  cast(tpu as integer)            as tpu_id,
+  cast(volume_harvested as double precision) as volume_harvested_liters,
+  cast(quality_grade as text)     as quality_grade
+from {{ source('raw_data','harvest_data') }}
+where harvest_date is not null and tpu is not null

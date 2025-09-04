@@ -1,10 +1,9 @@
--- Staging model for SCADA raw data
--- Standardizes SCADA parameter measurements
+{{ config(materialized='view', tags=['staging','scada']) }}
+-- Alias/normalized view over SCADA raw (kept for clarity of naming)
 
 select
-    datetime::timestamp as measurement_timestamp,
-    tpu::integer as tpu_id,
-    parameter_name::varchar as parameter_name,
-    value::float as parameter_value,
-    current_timestamp as processed_at
-from {{ source('raw_data', 'scada_raw_data') }}
+  date_trunc('day', measurement_timestamp) as measurement_date,
+  tpu_id,
+  parameter_name,
+  parameter_value
+from {{ ref('stg_scada__raw') }}

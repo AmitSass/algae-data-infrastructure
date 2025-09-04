@@ -1,19 +1,9 @@
--- Fact table for daily FlowCam summaries
--- Business-ready analytics table
+{{ config(materialized='table', tags=['marts','fact','flowcam']) }}
 
 select
-    measurement_date,
-    tpu_id,
-    reactor_id,
-    avg_algae_density,
-    min_algae_density,
-    max_algae_density,
-    measurement_count,
-    -- Add calculated fields
-    case 
-        when avg_algae_density > 1.5 then 'High'
-        when avg_algae_density > 1.0 then 'Medium'
-        else 'Low'
-    end as density_category,
-    current_timestamp as processed_at
-from {{ ref('int_flowcam__daily_summary') }}
+  s.measurement_date,
+  s.tpu_id,
+  s.reactor_id,
+  s.avg_algae_density,
+  s.density_category
+from {{ ref('int_flowcam__daily_summary') }} s

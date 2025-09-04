@@ -1,35 +1,30 @@
--- Staging model for FlowCam records
--- This model standardizes and cleans raw FlowCam data
+{{ config(materialized='view', tags=['staging','flowcam']) }}
+-- Standardize, de-duplicate, add simple features
 
-with source_data as (
-    select * from {{ source('raw', 'flowcam_raw') }}
+with src as (
+  select * from {{ ref('stg_flowcam__raw') }}
 ),
-
-cleaned_data as (
+dedup as (
+  select *
+  from (
     select
-        -- Primary key
-        date,
-        tpu,
-        reactor,
-        
-        -- Standardized columns
-        date::date as measurement_date,
-        tpu::integer as tpu_id,
-        reactor::integer as reactor_id,
-        algae_density::decimal(10,3) as algae_density,
-        
-        -- Metadata
-        current_timestamp as loaded_at,
-        'flowcam_sample' as source_file
-        
-    from source_data
-    where 
-        date is not null
-        and tpu is not null
-        and reactor is not null
-        and algae_density is not null
-        and algae_density >= 0
-        and algae_density <= 3.0
+      *,
+      row_number() over (
+        partition by measurement_date, tpu_id, reactor_id
+        order by measurement_date desc
+      ) as rn
+    from src
+  ) t
+  where rn = 1
 )
-
-select * from cleaned_data
+select
+  measurement_date,
+  tpu_id,
+  reactor_id,
+  algae_density,
+  case
+    when algae_density >= 1.5 then 'High'
+    when algae_density >= 0.8 then 'Medium'
+    else 'Low'
+  end as density_category
+from dedup
