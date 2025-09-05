@@ -1,4 +1,4 @@
-# BarAlgae — Public Demo (Data Infrastructure & Analytics)
+# BarAlgae — (Data Infrastructure & Analytics)
 
 [![CI](https://github.com/AmitSass/algae-data-infrastructure/actions/workflows/ci.yml/badge.svg)](https://github.com/AmitSass/algae-data-infrastructure/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
